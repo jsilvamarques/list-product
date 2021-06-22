@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import { styles } from './styles';
-import {Text, View, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import {Text, View, TouchableOpacity, Alert } from 'react-native';
+import { ActivityIndicator, Colors } from 'react-native-paper';
 
 import { login } from '../../service/ecommerce-service';
 
 import Input from '../../components/Input';
 
+import { useNavigation } from '@react-navigation/core';
 
+export default function LoginPage() {
 
-export default function LoginPage({ navigation }: any) {
+    const navigation = useNavigation();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
     function openRegistration(): void {
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'Registration' }],
-        });
+        navigation.navigate('Registration');
     }
 
     async function loginHandle(): Promise<any> {
@@ -28,14 +28,11 @@ export default function LoginPage({ navigation }: any) {
         setIsLoading(false);
         if (!result) {
             setIsLoading(false);
-                Alert.alert('Erro!', 'E-mail ou Senha Inválidos!\nTente novamente.');
-                return;
-            }
+            Alert.alert('Erro!', 'E-mail ou Senha Inválidos!\nTente novamente.');
+            return;
+        }
 
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'ListProducts' }],
-            });
+        navigation.navigate('ListProducts');
             
         }).catch((error) => {
             console.error(error);
@@ -74,7 +71,7 @@ export default function LoginPage({ navigation }: any) {
                     <ActivityIndicator
                         animating={isLoading}
                         size="large"
-                        color="#FFFFFF"
+                        color="#CCFFFF"
                     />
                 </View>
             )}

@@ -6,9 +6,11 @@ import { styles } from './styles';
 import User from '../../model/User';
 import { saveUser } from '../../service/ecommerce-service';
 import LoginPage from '../Login';
+import { useNavigation } from '@react-navigation/core';
 
+export default function Registration() {
 
-export default function Registration({ navigation }: any) {
+    const navigation = useNavigation();
 
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
@@ -18,10 +20,7 @@ export default function Registration({ navigation }: any) {
 
 
     function openLogin(): void {
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'Login' }],
-        });
+        navigation.navigate('Login');
     }
 
     function onSubmit(): void {
@@ -40,7 +39,6 @@ export default function Registration({ navigation }: any) {
                     Alert.alert('Erro!!','Erro ao cadastro.');
                     return;
                 }
-
                 Alert.alert('OK', 'Registro efetuado');
                 openLogin();
             })
@@ -48,8 +46,7 @@ export default function Registration({ navigation }: any) {
                 Alert.alert('Erro','Erro ao cadastro.');
             });
     }
-    
-    
+       
 
     return (
         <View style={styles.container}>

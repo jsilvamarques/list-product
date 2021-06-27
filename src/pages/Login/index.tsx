@@ -9,6 +9,9 @@ import Input from '../../components/Input';
 
 import { useNavigation } from '@react-navigation/core';
 
+import { isEmailValid, validateField } from '../../util/validations';
+
+
 export default function LoginPage() {
 
     const navigation = useNavigation();
@@ -22,23 +25,38 @@ export default function LoginPage() {
     }
 
     async function loginHandle(): Promise<any> {
-      setIsLoading(true);
+        setIsLoading(true);
 
-      login(email, password).then((result) => {
-        setIsLoading(false);
-        if (!result) {
+        if (!isEmailValid(email)) {
+            Alert.alert(
+                'E-mail inválido',
+                'E-mail informado não é válido'
+            );
             setIsLoading(false);
-            Alert.alert('Erro!', 'E-mail ou Senha Inválidos!\nTente novamente.');
+
             return;
         }
 
-        navigation.navigate('ListProducts');
-            
-        }).catch((error) => {
-            console.error(error);
-            Alert.alert('Error authentication:', 'Erro ao tentar logar.');
-        });   
-    }
+        if (!validateField(password, 'Informe a senha')) {
+            setIsLoading(false);
+            return;
+        }
+
+        login(email, password).then((result) => {
+            setIsLoading(false);
+            if (!result) {
+                setIsLoading(false);
+                Alert.alert('Erro!', 'E-mail ou Senha Inválidos!\nTente novamente.');
+                return;
+            }
+
+            navigation.navigate('ListProducts');
+                
+            }).catch((error) => {
+                console.error(error);
+                Alert.alert('Error authentication:', 'Erro ao tentar logar.');
+            });   
+        }
 
     return (
         <View style={styles.container}>

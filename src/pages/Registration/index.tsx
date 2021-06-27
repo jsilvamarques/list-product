@@ -7,6 +7,8 @@ import User from '../../model/User';
 import { saveUser } from '../../service/ecommerce-service';
 import LoginPage from '../Login';
 import { useNavigation } from '@react-navigation/core';
+import { isEmailValid, validateField, validateAge } from '../../util/validations';
+
 
 export default function Registration() {
 
@@ -24,6 +26,33 @@ export default function Registration() {
     }
 
     function onSubmit(): void {
+
+
+        if (!validateField(name, 'Informe seu nome')) {
+            return;
+        }
+        if (!validateField(age, 'Informe sua idade') || !validateAge(age, "Idade deve ser igual ou maior que 18") ) {
+            return;
+        }
+          
+        if (!validateField(email, 'Informe seu e-mail')) {
+            return;
+        }
+        if (!isEmailValid(email)) {
+            Alert.alert(
+                'E-mail inválido',
+                'O endereço de e-mail informado não é válido'
+            );
+            return;
+        }
+        
+        if (!validateField(password, 'Escolha uma senha')) {
+            return;
+        }
+
+        if (!validateField(address, 'Informe seu endereço')) {
+            return;
+        } 
 
         let user: User = {
             name: name,
@@ -51,9 +80,9 @@ export default function Registration() {
     return (
         <View style={styles.container}>
             <Input label="Nome Completo" value={name} onChange={setName} />
-            <Input label="Idade" value={age} onChange={setAge} />
-            <Input label="E-mail" value={email} onChange={setEmail} />
-            <Input label="Senha" value={password} onChange={setPassword} />
+            <Input label="Idade" value={age} onChange={setAge} keyboardType="number-pad"/>
+            <Input label="E-mail" value={email} onChange={setEmail} keyboardType="email-address"/>
+            <Input label="Senha" value={password} onChange={setPassword} isPassword/>
             <Input label="Endereço" value={address} onChange={setAddress}/>
 
             <TouchableOpacity style={styles.appButtonContainer} onPress={onSubmit}>
